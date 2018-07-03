@@ -14,12 +14,20 @@ int **leGrafo (int nVertices, int nArestas) {
   int **Grafo = (int **)malloc((nVertices + 1) * sizeof(int *));
 
   for(i = 0; i <= nVertices; i++) {
-          Grafo[i] = (int *)malloc(sizeof(int));
+          Grafo[i] = (int *)malloc((nVertices + 1) * sizeof(int));
   }
 
-  for (i = 1; i <= nArestas; i++) {
+  int j;
+  for(i = 1; i <= nVertices; i++){
+    for(j = 1; j <= nVertices; j++){
+      Grafo[i][j] = 0;
+    }
+  }
+
+  for (i = 0; i < nArestas; i++) {
           scanf("%d %d", &u, &v);
-          Grafo[u][v] = Grafo[v][u] = 1;
+          Grafo[u][v] = 1;
+          Grafo[v][u] = 1;
   }
 
   return Grafo;

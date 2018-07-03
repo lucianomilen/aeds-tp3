@@ -42,6 +42,7 @@ node **leGrafo(int nVertices, int nArestas)
                 insere(vi, vj, Grafo);
                 insere(vj, vi, Grafo); //insere bidirecionalmente
         }
+        printf("\n--\n");
         return Grafo; //retorna ponteiro para o grafo
 }
 
@@ -88,5 +89,5 @@ void geraRounds(int N, node **Grafo) {
 
         int c;
         for(c = 0; c < N; c++)
-                printf("%d %d\n", c+1, result[c]+1);
+                printf("%d %d\n", c, result[c]);
 }
