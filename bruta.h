@@ -1,3 +1,4 @@
+//LUCIANO OTONI MILEN [2012079754]
 #ifndef BRUTA
 #define BRUTA
 

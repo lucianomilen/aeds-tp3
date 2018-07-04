@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/luciano/Documentos/aeds-tp3/heuristica.c
+heuristica.h
+/home/luciano/Documentos/aeds-tp3/heuristica.h
+
+/home/luciano/Documentos/aeds-tp3/heuristica.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+
+/home/luciano/Documentos/aeds-tp3/main_heuristica.c
+heuristica.h
+/home/luciano/Documentos/aeds-tp3/heuristica.h
+

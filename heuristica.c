@@ -1,7 +1,16 @@
+//LUCIANO OTONI MILEN [2012079754]
 #include "heuristica.h"
 
-void insere(int vi, int vj, node **Grafo)
-{
+int encontraMaior (int *alocacao, int nVertices) {
+        int maior = alocacao[0], i; //encontra o maior round do vetor de alocação de rounds
+        for(i = 0; i < nVertices; i++) {
+                if(alocacao[i] > maior)
+                        maior = alocacao[i];
+        }
+        return maior + 1; // + 1 para encontrar o maior round correto
+}
+
+void insere(int vi, int vj, node **Grafo) {
         node *i, *j;
 
         j = (node *)malloc(sizeof(node)); //aloca memoria pro novo nó
@@ -39,55 +48,65 @@ node **leGrafo(int nVertices, int nArestas)
         for (i = 0; i < nArestas; i++) //lê as arestas
         {
                 scanf("%d %d", &vi, &vj);
-                insere(vi, vj, Grafo);
-                insere(vj, vi, Grafo); //insere bidirecionalmente
+                insere(vi-1, vj-1, Grafo); // -1 para ocupar menos espaço
+                insere(vj-1, vi-1, Grafo); //insere bidirecionalmente
         }
-        printf("\n--\n");
         return Grafo; //retorna ponteiro para o grafo
 }
 
-void geraRounds(int N, node **Grafo) {
-        int result[N];
-        result[0] = 0;
-        int u;
-        for(u = 1; u < N; u++) {
-                result[u] = -1;
+void liberaGrafo(node **Grafo, int nVertices)
+{
+        int j = nVertices;
+        while(j >= 0) //começa liberando o grafo pela ultima posição da lista
+        {
+                node *head = Grafo[j];
+                while (head != NULL)
+                {
+                        node *tmp = head;
+                        head = head->prox;
+                        free(tmp);
+                }
+                j--;
+                free(head);
         }
-        int available[N];
-        int cr;
-        for(cr = 0; cr < N; cr++) {
-                available[cr] = 0;
+        free(Grafo); //libera o grafo no geral
+}
+
+void geraRounds(int nVertices, node **Grafo, int *alocacao) {
+        int i;
+        for(i = 1; i < nVertices; i++) {
+                alocacao[i] = -5; //significa que o servidor ainda não foi alocado
+        }
+        int *rounds = (int *) malloc(nVertices * sizeof(int));
+        int countRound;
+        for(countRound = 0; countRound < nVertices; countRound++) {
+                rounds[countRound] = 0; //o round está disponível para atualizar (= 0)
         }
 
-        for(u = 1; u < N; u++) {
-
-                node *i = Grafo[u];
-                int a = 0;
-                while (i->prox != NULL) {
-                        if(result[a] != -1)
-                                available[result[a]] = 1;
-                        i = i->prox;
-                        ++a;
+        for(i = 1; i < nVertices; i++) {
+                node *aux = Grafo[i];
+                while (aux != NULL) {
+                        if(alocacao[aux->vertice] != -5) { //se já foi alocado,
+                                rounds[alocacao[aux->vertice]] = 1; //marca o round como indisponivel para o vértice
+                        }
+                        aux = aux->prox;
                 }
 
-                for(cr = 0; cr < N; cr++) {
-                        if(available[cr] == 0)
+                for(countRound = 0; countRound < nVertices; countRound++) {
+                        if(rounds[countRound] == 0) { //o round está disponível para alocar o servidor
                                 break;
+                        }
                 }
-                result[u] = cr;
-                node *k = Grafo[0];
-                a = 0;
-                while(k != NULL) {
-                        if(result[a] != -1)
-                                available[result[a]] = 0;
+                alocacao[i] = countRound; //atribui o round ao servidor
 
-                        a++;
-                        k = k->prox;
+                aux = Grafo[i];
+                while(aux != NULL) {
+                        if(alocacao[aux->vertice] != -5) { //se já foi alocado,
+                                rounds[alocacao[aux->vertice]] = 0; //zera o vetor para a próxima rodada
+                        }
+                        aux = aux->prox;
                 }
 
         }
-
-        int c;
-        for(c = 0; c < N; c++)
-                printf("%d %d\n", c, result[c]);
+        free(rounds); //libera o vetor de rounds
 }

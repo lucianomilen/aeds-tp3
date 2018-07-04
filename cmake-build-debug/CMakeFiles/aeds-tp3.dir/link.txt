@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -rdynamic CMakeFiles/aeds-tp3.dir/main_heuristica.c.o CMakeFiles/aeds-tp3.dir/heuristica.c.o  -o aeds-tp3 

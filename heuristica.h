@@ -1,3 +1,4 @@
+//LUCIANO OTONI MILEN [2012079754]
 #ifndef HEURISTICA
 #define HEURISTICA
 
@@ -15,7 +16,11 @@ void insere(int vi, int vj, node **Grafo);
 
 node **leGrafo(int nVertices, int nArestas);
 
-void geraRounds(int N, node **Grafo);
+void liberaGrafo(node **Grafo, int nVertices);
+
+void geraRounds(int N, node **Grafo, int *alocacao);
+
+int encontraMaior (int *alocacao, int nVertices);
 
 void percorre (int vertice_atual, int nVertices, int *rounds, int **Grafo);
 

@@ -1,37 +1,36 @@
+//LUCIANO OTONI MILEN [2012079754]
 #include "bruta.h"
 
 int main(int argc, char *argv[]) {
-        int i, N, M;
-        FILE *alocacao = fopen("alocacao.txt", "w+");
+        int i, nVertices, nArestas;
+        FILE *alocacao = fopen("alocacao.txt", "w+"); //arquivos de saída
         FILE *rodada = fopen("rodada.txt", "w+");
-        scanf("%d", &N);
-        scanf("%d", &M);
+        scanf("%d", &nVertices);
+        scanf("%d", &nArestas);
 
-        int **Grafo = leGrafo(N, M);
+        int **Grafo = leGrafo(nVertices, nArestas);
 
-        printf("%d\n", N);
+        int rounds[nVertices]; //serão no máximo nVertices rounds
 
-        int rounds[N];
+        int vertice_inicial = 1; //começa pelo começo
 
-        int vertice_inicial = 1;
-
-        for(i = 1; i <= N; i++){
-          rounds[i] = 0;
+        for(i = 1; i <= nVertices; i++){
+          rounds[i] = 0; //zera os rounds disponíveis
         }
 
-        percorre(vertice_inicial, N, rounds, Grafo);
+        percorre(vertice_inicial, nVertices, rounds, Grafo); //percorre o grafo alocando os rounds e verificando vértices adjacentes
 
-        for(i = 1; i <= N; i++) {
-                if(rounds[i] == 0)
-                        rounds[i] = encontraMaior(rounds, N);
-                fprintf(alocacao, "%d %d\n", i, rounds[i]);
+        for(i = 1; i <= nVertices; i++) {
+                if(rounds[i] == 0) //o algoritmo define 0 para o round maior. a função encontraMaior corrige o nº do round
+                        rounds[i] = encontraMaior(rounds, nVertices);
+                fprintf(alocacao, "%d %d\n", i, rounds[i]); //imprime no arquivo
         }
 
-        for(i = 0; i <= N; i++)
+        for(i = 0; i <= nVertices; i++)
           free(Grafo[i]);
-        free(Grafo);
+        free(Grafo); //libera as memórias alocadas
 
-        fprintf(rodada, "%d", encontraMaior(rounds, N) - 1);
+        fprintf(rodada, "%d", encontraMaior(rounds, nVertices) - 1);
         fclose(alocacao);
         fclose(rodada);
 
